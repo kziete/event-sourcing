@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  api:
+    build: api-gateway
+    command: "python app.py"
+    ports:
+      - 5000:5000
+    depends_on:
+      - python_service
+      - rabbitmq
+
+  python_service:
+    restart: always
+    build: python-service
+    command: "python app.py"
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - rabbitmq    
+  
+  rabbitmq:
+    image: rabbitmq
